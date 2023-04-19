@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tab Example B</title>
+	<style>
+		.tab {
+			display: none;
+		}
+
+		.tab.active {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div id="tabs">
+		<button class="tablinks" onclick="openTab(event, 'tab1')">Tab 1</button>
+		<button class="tablinks" onclick="openTab(event, 'tab2')">Tab 2</button>
+		<button class="tablinks" onclick="openTab(event, 'tab3')">Tab 3</button>
+        <button class="tablinks" onclick="openTab(event, 'tab4')">Tab 4</button>
+		<button class="tablinks" onclick="openTab(event, 'tab5')">Tab 5</button>
+		<button class="tablinks" onclick="openTab(event, 'tab6')">Tab 6</button>
+        <button class="tablinks" onclick="openTab(event, 'tab7')">Tab 7</button>
+		<button class="tablinks" onclick="openTab(event, 'tab8')">Tab 8</button>
+		<button class="tablinks" onclick="openTab(event, 'tab9')">Tab 9</button>
+        <button class="tablinks" onclick="openTab(event, 'tab10')">Tab 10</button>
+	</div>
+
+	<div id="tab1" class="tab active"></div>
+	<div id="tab2" class="tab"></div>
+	<div id="tab3" class="tab"></div>
+    <div id="tab4" class="tab"></div>
+	<div id="tab5" class="tab"></div>
+    <div id="tab6" class="tab"></div>
+	<div id="tab7" class="tab"></div>
+    <div id="tab8" class="tab"></div>
+	<div id="tab9" class="tab"></div>
+    <div id="tab10" class="tab"></div>
+
+	<script>
+		//<-- ---------------- Promises ---------------- -->
+// b. When a user tab is clicked display its posts’ titles by requesting the posts
+// from the link below using Ajax ES6 fetch function: 
+// https://jsonplaceholder.typicode.com/posts?userId=userId 
+// Note: 
+// - handle the response with promises using Async and await. 
+
+		const url = "https://jsonplaceholder.typicode.com/users";
+const tabs = document.querySelectorAll(".tab");
+const tablinks = document.querySelectorAll(".tablinks");
+
+function fetchPosts(userId) {
+  const url = `https://jsonplaceholder.typicode.com/posts?userId=${userId}`;
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => data.map(post => post.title));
+}
+
+async function openTab(event, tabId, userId) {
+  for (let i = 0; i < tabs.length; i++) {
+    const tab = tabs[i];
+    const tablink = tablinks[i];
+
+    if (tab.id === tabId) {
+      tab.classList.add("active");
+      tablink.classList.add("active");
+
+      const titles = await fetchPosts(userId);
+      tab.innerHTML = `<ul>${titles.map(title => `<li>${title}</li>`).join("")}</ul>`;
+    } else {
+      tab.classList.remove("active");
+      tablink.classList.remove("active");
+    }
+  }
+}
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    for (let i = 0; i < tabs.length; i++) {
+      const tablink = tablinks[i];
+      const username = data[i].username;
+      const userId = data[i].id;
+
+      tablink.addEventListener("click", event => {
+        openTab(event, `tab${i + 1}`, userId);
+      });
+
+      tablink.innerHTML = `Tab ${i + 1}: ${username}`;
+    }
+  })
+  .catch(error => console.error(error));
+
+	</script>
+</body>
+</html>

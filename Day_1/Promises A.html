@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tab Example A</title>
+	<style>
+		.tab {
+			display: none;
+		}
+
+		.tab.active {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div id="tabs">
+		<button class="tablinks" onclick="openTab(event, 'tab1')">Tab 1</button>
+		<button class="tablinks" onclick="openTab(event, 'tab2')">Tab 2</button>
+		<button class="tablinks" onclick="openTab(event, 'tab3')">Tab 3</button>
+        <button class="tablinks" onclick="openTab(event, 'tab4')">Tab 4</button>
+		<button class="tablinks" onclick="openTab(event, 'tab5')">Tab 5</button>
+		<button class="tablinks" onclick="openTab(event, 'tab6')">Tab 6</button>
+        <button class="tablinks" onclick="openTab(event, 'tab7')">Tab 7</button>
+		<button class="tablinks" onclick="openTab(event, 'tab8')">Tab 8</button>
+		<button class="tablinks" onclick="openTab(event, 'tab9')">Tab 9</button>
+        <button class="tablinks" onclick="openTab(event, 'tab10')">Tab 10</button>
+	</div>
+
+	<div id="tab1" class="tab active"></div>
+	<div id="tab2" class="tab"></div>
+	<div id="tab3" class="tab"></div>
+    <div id="tab4" class="tab"></div>
+	<div id="tab5" class="tab"></div>
+    <div id="tab6" class="tab"></div>
+	<div id="tab7" class="tab"></div>
+    <div id="tab8" class="tab"></div>
+	<div id="tab9" class="tab"></div>
+    <div id="tab10" class="tab"></div>
+
+	<script>
+		//<-- ---------------- Promises ---------------- -->
+// a. Make your own interface to create tabs and display usernames by requesting users from the link below using Ajax ES6 fetch function: https://jsonplaceholder.typicode.com/users 
+// Note: handle the response with promises using then and catch methods. 
+		const url = "https://jsonplaceholder.typicode.com/users";
+		const tabs = document.querySelectorAll(".tab");
+		const tablinks = document.querySelectorAll(".tablinks");
+
+		fetch(url)
+			.then(response => response.json())
+			.then(data => {
+				for (let i = 0; i < tabs.length; i++) {
+					const tab = tabs[i];
+					const username = data[i].username;
+
+					tab.innerHTML = `Username: ${username}`;
+				}
+			})
+			.catch(error => console.error(error));
+
+		function openTab(event, tabId) {
+			for (let i = 0; i < tabs.length; i++) {
+				const tab = tabs[i];
+				const tablink = tablinks[i];
+
+				if (tab.id === tabId) {
+					tab.classList.add("active");
+					tablink.classList.add("active");
+				} else {
+					tab.classList.remove("active");
+					tablink.classList.remove("active");
+				}
+			}
+		}
+	</script>
+</body>
+</html>
